@@ -1,13 +1,15 @@
 require 'rubygems'
 require 'nokogiri'
 require 'open-uri'
+require 'htmlentities'
 
 deputies = Hash.new
 
 def deputy_name(deputy_id)
   fiche = "http://www.assemblee-nationale.fr/13/tribun/fiches_id/#{deputy_id}.asp"
   doc = Nokogiri::HTML(open(fiche))
-  return doc.xpath('//h1[@class="titre"]').first.content
+  coder = HTMLEntities.new
+  return coder.encode(doc.xpath('//h1[@class="titre"]').first.content, :decimal)
 end
 
 def deputy_seat(deputy_id)
@@ -33,7 +35,7 @@ end
 parse_sceance(deputies, "http://www.assemblee-nationale.fr/13/cri/2008-2009/20090090.asp")
 
 deputies.sort{|a,b| b[1]<=>a[1]}.each { |elem|
-  puts "#{elem[1]}, #{deputy_seat(elem[0])}"
+  puts "#{elem[1]}, <a href='http://www.assemblee-nationale.fr/13/tribun/fiches_id/#{elem[0]}.asp'>#{deputy_name(elem[0])}</a> - Place: #{deputy_seat(elem[0])}"
 }
 
 

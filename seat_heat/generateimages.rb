@@ -2,11 +2,11 @@ class Conf
     def initialize
         @data = {
             'logfile' => '../20090090.txt',
-            'dotimage' => 'bolilla.png',
+            'dotimage' => 'bolilla_32.png',
             'format' => 'png',
             'colorimage' => 'colors.png',
-            'opacity' => "0.50",
-            'dotwidth' => 64
+            'opacity' => "1",
+            'dotwidth' => 32
         }
         raise "log file not found" unless File.exist?(@data['logfile'])
         raise "dot image not found" unless File.exist?(@data['dotimage'])
@@ -50,9 +50,10 @@ class Log
 end
 
 class SeatHeat
-  attr_reader :seat_id, :x, :y
-  def initialize (seat_id)
+  attr_reader :seat_id, :speech_num, :x, :y
+  def initialize (seat_id, speech_num)
     @seat_id = seat_id.to_i
+    @speech_num = speech_num.to_i
     
     x, y = 0
     File.open('seatmap.txt', 'r') do |f|
@@ -81,7 +82,7 @@ class Readparsefile
         speech_num, seat_id = line.split(/,/)
         if (speech_num and seat_id)
             #speech_num.to_i.times do 
-              @data.push(SeatHeat.new(seat_id))
+              @data.push(SeatHeat.new(seat_id, speech_num))
             #end
         else
             $stderr.puts "Warning: Bogus line "<< line
@@ -115,10 +116,20 @@ class Image
     end
     def iterate
         halfwidth=@conf['dotwidth']/2
-        compose = "convert -page "<<(@data.x+halfwidth).to_s<<"x"<<(@data.y+halfwidth).to_s<<" pattern:gray100 "
+        compose = "convert -page 459x300 pattern:gray100 "
+        
+        maxValue = 0
+        @data.list.each do |dot|
+          maxValue = dot.speech_num if maxValue < dot.speech_num
+        end
+        
         #iterate spots
         @data.list.each do |dot|
-            compose << "-page +"<<((dot.x)-halfwidth).to_s<<"+"<<((dot.y)-halfwidth).to_s<<" "<<@name<<".bol.png "
+            intensity = (((100*dot.speech_num)/maxValue).ceil).to_s
+            puts intensity
+            normalize = "convert #{@conf['dotimage']} -fill white -colorize #{intensity}% #{@name}_#{intensity}.bol.png"
+            system(normalize)
+            compose << "-page +#{((dot.x)-halfwidth).to_s}+#{((dot.y)-halfwidth).to_s} #{@name}_#{intensity}.bol.png "
         end
         compose << "-background white -compose multiply -flatten "<<@name<<".empty.png"
         system(compose)
@@ -139,6 +150,5 @@ conf = Conf.new
 file = Readparsefile.new(conf.data['logfile'])
 
 image = Image.new(file.coords,conf)
-image.normalizespot
 image.iterate
 image.colorize
