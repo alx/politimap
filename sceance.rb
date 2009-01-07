@@ -33,7 +33,7 @@ end
 parse_sceance(deputies, "http://www.assemblee-nationale.fr/13/cri/2008-2009/20090090.asp")
 
 deputies.sort{|a,b| b[1]<=>a[1]}.each { |elem|
-  puts "#{elem[1]}, #{deputy_name(elem[0])} - Place: #{deputy_seat(elem[0])}"
+  puts "#{elem[1]}, #{deputy_seat(elem[0])}"
 }
 
 
