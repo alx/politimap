@@ -19,6 +19,8 @@ set :domain, "88.191.126.74"
 server domain, :app, :web
 role :db, domain, :primary => true
 
+default_run_options[:pty] = true
+
 # if you're still using the script/reaper helper you will need
 # these http://github.com/rails/irs_process_scripts
 
