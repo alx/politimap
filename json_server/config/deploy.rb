@@ -21,6 +21,8 @@ role :db, domain, :primary => true
 
 default_run_options[:pty] = true
 
+set :bundle_gemfile,  "json_server/Gemfile"
+
 # if you're still using the script/reaper helper you will need
 # these http://github.com/rails/irs_process_scripts
 
