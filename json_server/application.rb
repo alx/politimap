@@ -29,5 +29,11 @@ get '/heatmap' do
     parse_synthese "#{month}"
     month += 1
   end
-  $SEATS.to_json
+  max = 0
+  $SEATS.each do |seat|
+    if seat[:count] && seat[:count] > 0
+      max = seat[:count] if max < seat[:count]
+    end
+  end
+  {:max => max, :data => $SEATS}.to_json
 end

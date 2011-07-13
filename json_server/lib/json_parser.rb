@@ -44,7 +44,7 @@ def parse_synthese(date)
   json = api_json("http://www.nosdeputes.fr/synthese/#{date}/json")
   json["deputes"].each do |depute_json|
     depute = depute_json["depute"]
-    nb_interventions = depute["hemicycle_interventions_courtes"]
+    nb_interventions = depute["hemicycle_interventions"]
     seat_index = $NAMES.index(depute["nom"])
     if seat_index.to_i > 0 && nb_interventions > 0
       if seat = $SEATS.select{|seat| seat[:id] == seat_index}.first
