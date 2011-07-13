@@ -3,9 +3,6 @@ require 'net/http'
 require 'json'
 require 'pp'
 
-load 'seats.rb'
-load 'names.rb'
-
 
 def create_name_table
   depute_seats = Array.new(650)
@@ -82,10 +79,3 @@ def seat_data
   end
 end
 
-month = 201001
-12.times do
-  parse_synthese "#{month}"
-  month += 1
-end
-seat_data
-#create_name_table
