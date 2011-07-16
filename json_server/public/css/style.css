@@ -188,3 +188,10 @@ a:hover { color: #036; }
 				margin-top:0;
 			}
 
+      #heatmap_loading{
+        background: #900;
+        color: white;
+        padding: 3px 5px 5px 10px;
+        position: relative;
+        top: 3px;
+      }
