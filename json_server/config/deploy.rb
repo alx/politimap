@@ -35,8 +35,9 @@ namespace :deploy do
   end
 end
 
-task :link_shared_directories do     
-end    
+task :link_shared_directories do
+  run "ln -s #{shared_path}/cached_json #{release_path}/json_server/cache"
+end
 
 after "deploy:update_code", :link_shared_directories
 
