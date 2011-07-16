@@ -24,8 +24,8 @@ end
 
 get '/heatmap' do
   content_type :json
-  month = 201001
-  12.times do
+  month = 201104
+  3.times do
     parse_synthese "#{month}"
     month += 1
   end
