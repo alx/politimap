@@ -2,7 +2,7 @@ require 'rubygems'
 require 'net/http'
 require 'json'
 require 'pp'
-
+require 'fileutils'
 
 def create_name_table
   depute_seats = Array.new(650)
@@ -33,11 +33,21 @@ end
 
 def api_json(json_url)
   url = URI.parse(json_url)
-  req = Net::HTTP::Get.new(url.path)
-  res = Net::HTTP.start(url.host, url.port) {|http|
-    http.request(req)
-  }
-  return JSON.parse(res.body)
+  cached_file = File.join(File.dirname(__FILE__), "/../cache/", url.path)
+
+  if File.exists? cached_file
+    return JSON.load(File.open(cached_file))
+  else
+    req = Net::HTTP::Get.new(url.path)
+    res = Net::HTTP.start(url.host, url.port) {|http|
+      http.request(req)
+    }
+    
+    FileUtils.mkdir_p File.dirname(cached_file)
+    File.open(cached_file, "w"){|file| file.write(res.body)}
+
+    return JSON.parse(res.body)
+  end
 end
 
 def parse_synthese(date)
