@@ -195,3 +195,10 @@ a:hover { color: #036; }
         position: relative;
         top: 3px;
       }
+      #heatmap_tooltip{
+        background: #009;
+        color: white;
+        padding: 3px 5px 5px 10px;
+        position: relative;
+        top: 3px;
+      }

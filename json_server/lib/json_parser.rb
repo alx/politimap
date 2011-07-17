@@ -8,28 +8,34 @@ def create_name_table
   depute_seats = Array.new(650)
   
   depute_list = api_json("http://www.nosdeputes.fr/deputes/json")
-  depute_list["deputes"].each do |depute_json|
+  depute_list["deputes"].each do |json|
 
-    depute = depute_json["depute"]
+    depute = json["depute"]
     depute_api = api_json(depute["api_url"])
 
+    id = depute["api_url"].gsub("http://www.nosdeputes.fr/", "").gsub("/json", "")
     name = depute_api["depute"]["nom"]
     seat = depute_api["depute"]["place_en_hemicycle"].to_i
     pp "name: #{name} - seat: #{seat}"
 
     if seat > 0
-      depute_seats[seat] = name
+      depute_seats[seat] = {:name => name, :id => id}
     end
 
   end
   File.open('names.rb', 'w') do |file|
     file.write "$NAMES=[\n"
-    depute_seats.each do |name|
-      file.write "\"#{name}\",\n"
+    depute_seats.each do |seat|
+      if seat
+        file.write("{:id => \"#{seat[:id]}\",:name => \"#{seat[:name]}\"},\n")
+      else
+        file.write("{},\n")
+      end
     end
     file.write "]"
   end
 end
+
 
 def api_json(json_url)
   url = URI.parse(json_url)
@@ -55,7 +61,7 @@ def parse_synthese(date)
   json["deputes"].each do |depute_json|
     depute = depute_json["depute"]
     nb_interventions = depute["hemicycle_interventions"]
-    seat_index = $NAMES.index(depute["nom"])
+    seat_index = $NAMES.index{|store| store[:name] == depute["nom"]}
     if seat_index.to_i > 0 && nb_interventions > 0
       if seat = $SEATS.select{|seat| seat[:id] == seat_index}.first
         if seat[:count]
@@ -88,4 +94,3 @@ def seat_data
     file.write output
   end
 end
-

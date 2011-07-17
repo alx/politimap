@@ -179,7 +179,7 @@
 				this.set("width", canvas.width);
 				canvas.height = acanvas.height = element.style.height.replace(/px/,"") || this.getHeight(element);
 				this.set("height", canvas.height);
-				canvas.style.position = acanvas.style.position = "absolute";
+        canvas.style.position = acanvas.style.position = "absolute";
 				canvas.style.top = acanvas.style.top = "0";
 				canvas.style.left = acanvas.style.left = "0";
 				canvas.style.zIndex = 1000000;

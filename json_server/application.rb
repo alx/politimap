@@ -37,3 +37,11 @@ get '/heatmap' do
   end
   {:max => max, :data => $SEATS}.to_json
 end
+
+get '/depute/:seat' do
+  @depute_id = $NAMES[params[:seat].to_i][:id]
+  depute_url = "http://www.nosdeputes.fr/#{@depute_id}/json"
+  json = api_json(depute_url)
+  @depute = json["depute"]
+  erb :depute, :layout => false
+end
