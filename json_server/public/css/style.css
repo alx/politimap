@@ -27,6 +27,15 @@
   top: 1px;
 }
 
+.legend{
+  text-align:center;
+  font-size:10px;
+}
+
+.legend img{
+  margin: 0 10px;
+}
+
 #filter{
   padding-top:10px;
   margin-bottom:20px;
