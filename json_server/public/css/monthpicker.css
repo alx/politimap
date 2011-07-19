@@ -1,0 +1,25 @@
+/* basic style */ 
+.MonthPicker {margin:0; padding:0; font:bold 11px Arial; color:#ffe; background-image:url(../img/bg.png)}
+.MonthPicker {-moz-user-select:none; user-select:none}
+.MonthPicker th{}
+.MonthPicker td{padding:0px}
+.MonthPicker a{text-decoration:none; color:#333}
+.MonthPicker a:hover{background:#ffe}
+.MonthPicker a:hover span{background:#ffe; color:#06f}
+.MonthPicker a.li{position:relative}
+.MonthPicker ul{list-style:none; margin:0; padding:0}
+.MonthPicker ul table{width:100%; border-collapse:collapse}
+.MonthPicker ul ul{position:absolute; visibility:hidden; left:-1px; top:20px; z-index:2; border:1px solid #999}
+.MonthPicker ul ul .selected{background:#06f; color:#fff}
+.MonthPicker li{position:relative; width:60px; float:left; text-align:center}
+.MonthPicker li a{display:block}
+.MonthPicker .li:hover ul{background:#ffe; visibility:visible}
+.MonthPicker .li:hover li a:hover{background:#09f; color:#ffe}
+.MonthPicker span{display:inline-block; width:58px; padding:0px; line-height:20px; text-align:center; cursor:pointer}
+.MonthPicker .month span{width:37px}
+.MonthPicker .selected{background:#ffe}
+/* print style */
+@media print{
+.MonthPicker span{display:none}
+.MonthPicker .selected{display:block}
+}

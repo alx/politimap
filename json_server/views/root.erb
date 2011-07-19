@@ -1,13 +1,37 @@
-<h2>Qu'est-ce?</h2>
-<p>Politimap est une application web qui permet de visualiser les informations
-disponibles sur <a href="http://www.nosdeputes.fr">nosdeputes.fr</a></p>
-
-<h2>Que vois-je?</h2>
-<p>La requète actuelle montre la participation des députés du mois d'avril à juin 2011.</p>
-
-<h2>A venir</h2>
-<p>Il devrait bientôt être possible de faire ses propres requêtes sur l'API de 
-<a href="http://cpc.regardscitoyens.org/trac/wiki/API">regardscitoyens.org</a>.</p>
-
-<div id="info">
+<div class="span-15 prepend-1 colborder">
+  <div id="heatmapArea"></div>
+  <hr>
+  <div id='filter' class="ui-form">
+    <div class="MonthPicker" id="start_date" title="Début">D&eacute;but</div> 
+    <div class="MonthPicker" id="end_date" title="Fin">Fin</div> 
+    <div id="radio_info">
+      <input type="radio" id="radio1" name='select_info' value="amendements" /><label for="radio1">Amendements</label> 
+      <input type="radio" id="radio2" name='select_info' value="commissions" /><label for="radio2">Commissions</label> 
+      <input type="radio" id="radio3" name='select_info' value="hemicycle" checked="checked" /><label for="radio3">Hemicycle</label> 
+      <input type="radio" id="radio4" name='select_info' value="propositions" /><label for="radio4">Propositions</label> 
+      <input type="radio" id="radio5" name='select_info' value="questions" /><label for="radio5">Questions</label> 
+    </div> 
+  </div>
 </div>
+<div class="span-6 last">
+  <h2>Qu'est-ce?</h2>
+  <p>Politimap est une application web qui permet de visualiser les informations
+  disponibles sur <a href="http://www.nosdeputes.fr">nosdeputes.fr</a></p>
+
+  <hr>
+
+  <h2>Que vois-je?</h2>
+  <p>La requète actuelle montre la participation dans l'hémicycle des députés du mois d'avril à juin 2011.</p>
+  <p>Vous pouvez modifier cet affichage en changeant la recherche sous l'image de l'Assemblée</p>
+
+  <hr>
+
+  <div id="info">
+    <h2>&larr; Quel député?</h2>
+    <p>
+      <img src="/lulz.jpg" width="125" height="160">
+    </p>
+  </div>
+</div>
+
+

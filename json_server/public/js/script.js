@@ -3,34 +3,9 @@
 */
 
 var heatmap = null;
-var canvas = null;
+var canvas  = null;
 var context = null;
 var myStage = null;
-var message = "";
-
-function getCursorPosition(e) {
-  var x;
-  var y;
-
-  if (e.pageX != undefined && e.pageY != undefined) {
-    x = e.pageX;
-    y = e.pageY;
-  } else {
-    x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-    y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-  }
-
-  x -= $("#heatmapArea").offset().left;
-  y -= $("#heatmapArea").offset().top;
-
-  return {'x': x, 'y': y};
-}
-
-
-function mapOnClick(e){
-  var seat = getCursorPosition(e);
-  console.log("seat: " + seat['x'] + " - " + seat['y']);
-}
 
 function mapDisplayTooltip(e){
   $("#heatmapArea").prepend("<span id='heatmap_tooltip'>Cliquer pour selectionner...</span>");
@@ -40,51 +15,63 @@ function mapHideTooltip(e){
   $("#heatmap_tooltip").remove();
 }
 
-function refreshHeatmap(){
-  $("#heatmapArea").prepend("<span id='heatmap_loading'>chargement...</span>");
-  $.getJSON("/heatmap", function(map){
+function seatCanvas(data){
 
-    heatmap.store.setDataSet(map);
-    $("#heatmap_loading").remove();
+  canvas = $("canvas")[0];
+  context = canvas.getContext("2d");
 
-    $("canvas").attr("id", "heatmapCanvas");
-    canvas = $("canvas")[0];
-    context = canvas.getContext("2d");
+  canvas.addEventListener("mouseover", mapDisplayTooltip, false);
+  canvas.addEventListener("mouseout", mapHideTooltip, false);
 
-    //canvas.addEventListener("click", mapOnClick, false);
-    canvas.addEventListener("mouseover", mapDisplayTooltip, false);
-    canvas.addEventListener("mouseout", mapHideTooltip, false);
+  $("canvas").attr("id", "heatmapCanvas");
+  myStage = new Kinetic("heatmapCanvas", "2d");
 
-    myStage = new Kinetic("heatmapCanvas", "2d");
+  myStage.setDrawStage(function(){
+    $.each(data, function(index, data){
 
-    myStage.setDrawStage(function(){
-      $.each(map['data'], function(index, data){
-            // draw red circle
-            myStage.beginRegion();
-            context.beginPath();
-            context.arc(data.x, data.y, 6, 0, Math.PI * 2, true);
-            //context.stroke();
+      // draw seat circle
+      myStage.beginRegion();
+      context.beginPath();
+      context.arc(data.x, data.y, 6, 0, Math.PI * 2, true);
+      //context.stroke();
 
-            myStage.addRegionEventListener("onmousedown", function(){
-              $.get("/depute/" + data.id, function(info){
-                $("#info").html(info)
-              });
-            });
-            myStage.addRegionEventListener("onmouseover", function(){
-              $("body").css("cursor", "pointer");
-            });
-            myStage.addRegionEventListener("onmouseout", function(){
-              $("body").css("cursor", "default");
-            });
-
-            myStage.closeRegion();
+      myStage.addRegionEventListener("onmousedown", function(){
+        $.get("/depute/" + data.id, function(info){
+          $("#info").html(info)
+        });
       });
+
+      myStage.addRegionEventListener("onmouseover", function(){
+        $("body").css("cursor", "pointer");
+      });
+
+      myStage.addRegionEventListener("onmouseout", function(){
+        $("body").css("cursor", "default");
+      });
+
+      myStage.closeRegion();
     });
   });
 }
+
+function refreshHeatmap(){
+  $("#heatmapArea").prepend("<span id='heatmap_loading'>chargement...</span>");
+  $.getJSON("/heatmap", function(map){
+    heatmap.store.setDataSet(map);
+    seatCanvas(map['data']);
+    $("#heatmap_loading").remove();
+  });
+}
 $(document).ready(function(){
+  
   heatmap = h337.create({"element":document.getElementById("heatmapArea"), "radius":8, "visible":true});
   refreshHeatmap();
+
+  $("#radio_info").buttonset();
+  $("#start_date").monthpicker("2011-03", refreshHeatmap);
+  $("#end_date").monthpicker("2011-06", refreshHeatmap);
+
+  $("input[type=radio]").click(refreshHeatmap);
 });
 
 
