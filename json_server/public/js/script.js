@@ -33,6 +33,7 @@ function seatCanvas(data){
       myStage.beginRegion();
       context.beginPath();
       context.arc(data.x, data.y, 6, 0, Math.PI * 2, true);
+      //context.lineWidth = "0.2";
       //context.stroke();
 
       myStage.addRegionEventListener("onmousedown", function(){
