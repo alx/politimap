@@ -24,9 +24,10 @@ end
 
 get '/heatmap' do
   content_type :json
+  $SEATS.each{|seat| seat[:count] = 0}
   month = 201104
   3.times do
-    parse_synthese "#{month}"
+    parse_synthese "#{month}", params[:info]
     month += 1
   end
   max = 0

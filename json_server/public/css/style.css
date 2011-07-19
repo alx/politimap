@@ -1,3 +1,7 @@
+.container {
+  margin-top:10px;
+}
+
 #heatmapArea {
   position: relative;
   float: left;
@@ -12,7 +16,7 @@
   color: white;
   padding: 3px 5px 5px 10px;
   position: relative;
-  top: 3px;
+  top: 1px;
 }
 
 #heatmap_tooltip{
@@ -20,7 +24,7 @@
   color: white;
   padding: 3px 5px 5px 10px;
   position: relative;
-  top: 3px;
+  top: 1px;
 }
 
 #filter{

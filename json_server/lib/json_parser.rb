@@ -56,11 +56,23 @@ def api_json(json_url)
   end
 end
 
-def parse_synthese(date)
+def parse_synthese(date, info)
   json = api_json("http://www.nosdeputes.fr/synthese/#{date}/json")
   json["deputes"].each do |depute_json|
     depute = depute_json["depute"]
-    nb_interventions = depute["hemicycle_interventions"]
+    
+    nb_interventions = case info
+    when "amendements"
+      depute["amendements_adoptes"] + depute["amendements_signes"]
+    when "commissions"
+      depute["commission_interventions"] + depute["commission_presences"]
+    when "hemicycle"
+      depute["hemicycle_interventions"] + depute["hemicycle_interventions_courtes"]
+    when "propositions"
+      depute["propositions_ecrites"] + depute["propositions_signees"]
+    when "questions"
+      depute["questions_ecrites"] + depute["questions_orales"]
+    end
     seat_index = $NAMES.index{|store| store[:name] == depute["nom"]}
     if seat_index.to_i > 0 && nb_interventions > 0
       if seat = $SEATS.select{|seat| seat[:id] == seat_index}.first

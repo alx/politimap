@@ -34,14 +34,17 @@
 
   <div class="container">
 
-    <h1>Politimap</h1>
-    <hr>
     <%= yield %>
     <hr>
     <div class=“span-24 footer”>
-      <a href="http://www.patrick-wied.at/static/heatmapjs/">heatmap.js</a> - 
-      <a href="http://www.kineticjs.com">kinetic.js</a> - 
-      <a href="http://tetalab.org">tetalab</a>
+      <div class="span-17 prepend-1">
+        <h1>Politimap</h1>
+      </div>
+      <div class="span-6 last">
+        <a href="http://www.patrick-wied.at/static/heatmapjs/">heatmap.js</a><br>
+        <a href="http://www.kineticjs.com">kinetic.js</a><br>
+        <a href="http://tetalab.org">tetalab</a>
+      </div>
     </div>
   </div>
 
@@ -51,7 +54,9 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js"></script>
   <script>window.jQuery || document.write("<script src='js/libs/jquery-1.5.1.min.js'>\x3C/script>")</script>
   <script type="text/javascript" src="http://code.jquery.com/ui/1.8.13/jquery-ui.min.js"></script>
+
   <script type="text/javascript" src="js/libs/monthpicker.js"></script>
+  <script type="text/javascript" src="js/libs/date.js"></script>
 
   <!-- scripts concatenated and minified via ant build script-->
   <script src="js/plugins.js"></script>
