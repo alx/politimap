@@ -56,25 +56,23 @@ function seatCanvas(data){
 
 function refreshHeatmap(){
   
+  $("#heatmap_loading").remove();
+
   var filters = {};
 
   filters["info"] = $("input:checked").val();
 
-  var start_year = $("#start_date td :first span.selected").html();
+  var start_year = $("#start_date td:last span.selected").html();
   var start_month = $("#start_date td.month span.selected").parent().attr("title");
   filters["start_date"] = Date.parse(start_year + "-" + start_month);
 
-  var end_year = $("#end_date td :first span.selected").html();
+  var end_year = $("#end_date td:last span.selected").html();
   var end_month = $("#end_date td.month span.selected").parent().attr("title");
   filters["end_date"] = Date.parse(end_year + "-" + end_month);
 
   if(filters["start_date"].compareTo(filters["end_date"]) == 1){
     $("#heatmapArea").prepend("<span id='heatmap_loading'>erreur sur les dates sélectionnées: la fin est avant le début...</span>");
   } else {
-
-    if(filters["start_date"].equals(filters["end_date"])){
-      filters["end_date"].addMonths(1);
-    }
 
     filters["start_date"] = filters["start_date"].toString('yyyy/MM');
     filters["end_date"] = filters["end_date"].toString('yyyy/MM');
@@ -94,8 +92,39 @@ $(document).ready(function(){
 
   $("#radio_info").buttonset();
 
-  $("#start_date").monthpicker("2011-03", refreshHeatmap);
-  $("#end_date").monthpicker("2011-06", refreshHeatmap);
+  $("#start_date").monthpicker({
+    elements: [
+      {tpl:"month",opt:{
+        caption: 'Début',
+        text: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jui', 'Jul', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
+        value: 3
+      }},
+      {tpl:"year",opt:{
+        caption: '',
+        range: "-4~0",
+        value: 2011
+      }}
+    ],
+    onChanged: refreshHeatmap
+  });
+
+  
+  $("#end_date").monthpicker({
+    elements: [
+      {tpl:"month",opt:{
+        caption: 'Fin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
+        text: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jui', 'Jul', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
+        value: 6
+      }},
+      {tpl:"year",opt:{
+        caption: '',
+        range: "-4~0",
+        value: 2011
+      }}
+    ],
+    onChanged: refreshHeatmap
+  });
+
   $("input[type=radio]").click(refreshHeatmap);
 
   refreshHeatmap();
