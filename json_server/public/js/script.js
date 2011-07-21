@@ -8,7 +8,7 @@ var context = null;
 var myStage = null;
 
 function mapDisplayTooltip(e){
-  if($("#heatmap_loading").is(":visible")){
+  if(!$("#heatmap_loading").is(":visible")){
     $("#heatmapArea").prepend("<span id='heatmap_tooltip'>Cliquer pour selectionner un député...</span>");
   }
 }
